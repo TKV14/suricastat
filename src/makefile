@@ -1,9 +1,9 @@
 CFLAGS = -Wall -Wextra -Werror -g
-LFLAGS = -ljansson
+LFLAGS = -l sqlite3
 
 all: suricatastat
 
-suricatastat: main.o
+suricatastat: main.o file.o
 	gcc $(CFLAGS) $(LFLAGS) $^ -o $@
 
 %.o: %.c
