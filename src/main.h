@@ -6,3 +6,4 @@
 #include <errno.h>
 
 #include "file.h"
+#include "db.h"

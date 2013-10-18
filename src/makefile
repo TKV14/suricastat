@@ -3,7 +3,7 @@ LFLAGS = -l sqlite3
 
 all: suricatastat
 
-suricatastat: main.o file.o
+suricatastat: main.o file.o db.o
 	gcc $(CFLAGS) $(LFLAGS) $^ -o $@
 
 %.o: %.c
