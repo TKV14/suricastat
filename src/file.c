@@ -52,6 +52,7 @@ int importFile(char *filename)
 		}
 	}
 
+	free(actLine->date);
 	free(actLine);
 
 	return 1;
