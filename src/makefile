@@ -7,7 +7,7 @@ suricatastat: main.o file.o db.o
 	gcc $(CFLAGS) $(LFLAGS) $^ -o $@
 
 %.o: %.c
-	gcc $(CFLAGS) $(LFLAGS) -c $< -o $@
+	gcc $(CFLAGS) -c $< -o $@
 
 clean:
 	rm *.o
