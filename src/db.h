@@ -3,6 +3,10 @@
 
 #include <sqlite3.h>
 
-void openDb();
+#define DBPATH "../test.db"
+
+sqlite3 *openDb(char *dbPath);
+void createTable(char *db);
+void insertTable(char *counter, char *threadName, int value);
 
 #endif

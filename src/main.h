@@ -4,5 +4,7 @@
 #include <string.h>
 #include <errno.h>
 
+#include <time.h>
+
 #include "file.h"
 #include "db.h"

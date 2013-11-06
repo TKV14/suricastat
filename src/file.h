@@ -3,6 +3,7 @@
 
 #define MAXTHREADNAME 255
 #define MAXCOUNTERNAME 255
+#define NBTOINSERT 2
 
 typedef struct _dateCell
 {
@@ -32,5 +33,6 @@ int readLine(FILE *file, char *buf);
 void parseDateLine(char *data, dateCell *actLine);
 void parseDataLine(char *data, dataLine *actLine);
 void printDate(dateCell *data);
+void selectInsert(dataLine *actLine);
 
 #endif /*_FILE_H*/

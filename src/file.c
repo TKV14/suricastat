@@ -43,6 +43,7 @@ int importFile(char *filename)
 		{
 			case 1:
 				parseDataLine(buf, actLine);
+				selectInsert(actLine);
 				break;
 			case 2:
 				parseDateLine(buf, actLine->date);
@@ -135,4 +136,21 @@ void printDate(dateCell *date)
 			date->umin,
 			date->usec
 	      );
+}
+
+void selectInsert(dataLine *actLine)
+{
+	int i;
+	char **toInsert;
+
+	toInsert = malloc(sizeof(char*) * NBTOINSERT);
+	for(i=0; i<NBTOINSERT; i++)
+		toInsert[i] = malloc(sizeof(char)*MAXCOUNTERNAME);
+
+	sprintf(toInsert[0], "capture.kernel_packets");
+	sprintf(toInsert[1], "capture.kernel_drops");
+
+	for(i=0; i<NBTOINSERT; i++)
+		if(strcmp(toInsert[i], actLine->counter) == 0)
+			insertTable(actLine->counter, actLine->threadName, actLine->value);
 }
