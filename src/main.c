@@ -4,11 +4,15 @@ int main(void)
 {
 	float time;
 	clock_t t1, t2;
+	dataList *l = NULL;
 
 	t1 = clock();
 //	openDb(DBPATH);
 //	createTable(DBPATH);
-	importFile("../stats.log");
+//	importFile("../stats.log");
+
+	readDataBase(&l);
+	printf("%d\n", nbThread(l));
 
 	t2 = clock();
 

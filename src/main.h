@@ -8,3 +8,5 @@
 
 #include "file.h"
 #include "db.h"
+#include "gestionStruct.h"
+#include "stats.h"

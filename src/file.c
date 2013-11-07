@@ -8,25 +8,19 @@ int importFile(char *filename)
 		Renvoie 1 en cas de succes
 	*/
 	int retour, nbReadLine;
-	char buf[255];
+	char buf[255], insertLine[5000000];
 	FILE *filelog = NULL;
 	dataLine *actLine = NULL;
+	dataList *l = NULL;
+	dataList *ptr = NULL;
 
 	retour = 0;
 	nbReadLine = 0;
+	memset(insertLine, '\0', 5000000);
+	sprintf(insertLine, "INSERT INTO infos VALUES ('test', 'test', '10')\n");
 
-	actLine = (dataLine*) malloc(sizeof(dataLine));
-	if(actLine == NULL)
-	{
-		fprintf(stderr, "Allocation Failed (dataLine)\n");
-		return -1;
-	}
-	actLine->date = (dateCell*) malloc(sizeof(dateCell));
-	if(actLine->date == NULL)
-	{
-		fprintf(stderr, "Allocation Failed (date)\n");
-		return -1;
-	}
+	newDataList(&l); 
+	newDataLine(&actLine);
 
 	filelog = fopen(filename, "r");
 	if(filelog == NULL)
@@ -34,6 +28,8 @@ int importFile(char *filename)
 		fprintf(stderr, "Fichier non ouvert: %s\n", strerror(errno));
 		return -1;
 	}
+
+	ptr = l;
 
 	while((retour = readLine(filelog, buf)) != -1)
 	{
@@ -43,18 +39,22 @@ int importFile(char *filename)
 		{
 			case 1:
 				parseDataLine(buf, actLine);
-				selectInsert(actLine);
+				insertToList(&ptr, actLine);
 				break;
 			case 2:
-				parseDateLine(buf, actLine->date);
+				newDateCell(&(ptr->date));
+				parseDateLine(buf, ptr->date);
+				newDataList(&(ptr->next));
+				ptr = ptr->next;
 				break;
 			default:
 				break;
 		}
 	}
 
-	free(actLine->date);
 	free(actLine);
+
+	insertDataList(l);
 
 	return 1;
 }
@@ -114,13 +114,7 @@ void parseDataLine(char *data, dataLine *actLine)
 			actLine->threadName,
 			&(actLine->value)
 		);
-
-/*	printf("%s | %s | %ld\n",
-			actLine->counter,
-			actLine->threadName,
-			actLine->value
-		);
-*/}
+}
 
 void printDate(dateCell *date)
 {
@@ -138,7 +132,7 @@ void printDate(dateCell *date)
 	      );
 }
 
-void selectInsert(dataLine *actLine)
+void insertToList(dataList **l, dataLine *actLine)
 {
 	int i;
 	char **toInsert;
@@ -151,6 +145,16 @@ void selectInsert(dataLine *actLine)
 	sprintf(toInsert[1], "capture.kernel_drops");
 
 	for(i=0; i<NBTOINSERT; i++)
+	{
 		if(strcmp(toInsert[i], actLine->counter) == 0)
-			insertTable(actLine->counter, actLine->threadName, actLine->value);
+		{
+			newDataList(&((*l)->next));
+			*l = (*l)->next;
+			newDataLine(&((*l)->data));
+
+			strcpy((*l)->data->counter, actLine->counter);
+			strcpy((*l)->data->threadName, actLine->threadName);
+			(*l)->data->value = actLine->value;
+		}
+	}
 }
