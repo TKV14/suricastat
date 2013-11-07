@@ -62,3 +62,45 @@ void printDataList(dataList *l)
 		l = l->next;
 	}
 }
+
+int convertUDateToSec(dateCell *d)
+{
+	return d->usec + (60 * d->umin) + (3600 * d->uhours) + (86400 * d->uday);
+}
+
+int compareUDateCell(dateCell *d1, dateCell *d2)
+{
+	/*
+		Retourne 0 si les 2 date sont identiques
+(a faire)	Retourne 1 si d1 est après d2
+(a faire)	Retourne -1 si d1 est avant d2
+	*/
+
+	if(d1->uday == d2->uday)
+	{
+		if(d1->hours == d2->hours)
+		{
+			if(d1->umin == d2->umin)
+			{
+				if(d1->usec == d2->usec)
+					return 0;
+				else if(d1->usec > d2->usec)
+					return 1;
+				else
+					return -1;
+			}
+			else if(d1->umin > d2->umin)
+				return 1;
+			else
+				return -1;
+		}
+		else if(d1->hours > d2->hours)
+			return 1;
+		else
+			return -1;
+	}
+	else if(d1->uday > d2->uday)
+		return 1;
+	else
+		return -1;
+}

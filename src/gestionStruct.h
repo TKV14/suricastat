@@ -38,5 +38,7 @@ void newDataLine(dataLine **l);
 void newDateCell(dateCell **l);
 void newDataList(dataList **l);
 void printDataList(dataList *l);
+int convertUDateToSec(dateCell *d);
+int compareUDateCell(dateCell *d1, dateCell *d2);
 
 #endif /*_GESTIONSTRUT_H*/

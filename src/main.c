@@ -12,7 +12,7 @@ int main(void)
 //	importFile("../stats.log");
 
 	readDataBase(&l);
-	printf("%d\n", nbThread(l));
+	stats(l);
 
 	t2 = clock();
 
