@@ -7,7 +7,7 @@
 
 #define NBTOINSERT 2
 
-int importFile(char *filename);
+int importFile(char *filename, dataList **l);
 int readLine(FILE *file, char *buf);
 void parseDateLine(char *data, dateCell *actLine);
 void parseDataLine(char *data, dataLine *actLine);

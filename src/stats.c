@@ -2,8 +2,8 @@
 
 void stats(dataList *l)
 {
-	int i, nbCounter, nbThread, nbRun;
-	int64_t drop1, drop2;
+	int i, j, nbCounter, nbThread, nbRun;
+	int64_t drop1, drop2, nbDrop1Run, nbDrop2Run;
 	char **counterNames = NULL;
 	char **threadNames = NULL;
 
@@ -13,29 +13,77 @@ void stats(dataList *l)
 	nbCounter = calcNbCounter(l, &counterNames);
 	nbThread = calcNbThread(l, &threadNames);
 	nbRun = clacNbRun(l);
+	nbDrop1Run = 0;
+	nbDrop2Run = 0;
 
-	printf("%d\n", nbCounter);
-	for(i=0; i<nbCounter; i++)
-		printf("	%s\n", counterNames[i]);
+	printf("Nombre de run: %d\n", nbRun);
+	printf("Nombre de thread: %d\n", nbThread);
+	printf("Nombre de compteur: %d\n", nbCounter);
 
-	printf("%d\n", nbThread);
-	for(i=0; i<nbThread; i++)
-		printf("	%s\n", threadNames[i]);
+	for(i=0; i<nbRun; i++)
+	{
+		printf("  Run %d\n", i);
 
+		for(j=0; j<nbThread; j++)
+		{
+			drop1 = calcNbDropForCounter(l, counterNames[0], threadNames[j], i+1);
+			drop2 = calcNbDropForCounter(l, counterNames[1], threadNames[j], i+1);
 
-	drop1 = calcNbDropForCounter(l, counterNames[0], 2);
-	drop2 = calcNbDropForCounter(l, counterNames[1], 2);
+			printf("    %16s: %16lld | %16lld | %f\n", threadNames[j], drop1, drop2, (float)drop2/(float)drop1);
 
-	printf("%d %d\n", nbCounter, nbThread);
+			nbDrop1Run += drop1;
+			nbDrop2Run += drop2;
+		}
 
-	printf("%d\n", nbRun);
-	printf("sec: %d\n", nbSecondeInRun(l, 1));
-
-	printf("%d\n", nbSecondeInRun(l, 2));
-
-	printf("%ld %ld\nResult: %f\n", drop1, drop2, (float)drop2/(float)drop1);
+		printf("_______________________________________________________________________________\n");
+		printf("  %18s: %16lld | %16lld | %f\n", "TOTAL", nbDrop1Run, nbDrop2Run, (float)nbDrop2Run/(float)nbDrop1Run);
+		printf("    Moyenne paquets/secondes: %10.1f | Moyenne drops/secondes: %10.1f\n\n",
+			(float)nbDrop1Run/(float)nbSecondeInRun(l, i),
+			(float)nbDrop2Run/(float)nbSecondeInRun(l, i));
+	}
 }
 
+int64_t calcNbDropForCounter(dataList *l, char *counterName, char *threadName, int run)
+{
+	int64_t count, numRun;
+	dateCell *d = NULL;
+
+	count = 0;
+	numRun = 0;
+
+	while(l != NULL)
+	{
+		if(l->data != NULL)
+		{
+			if(l->date != NULL)
+			{
+				if(d == NULL)
+				{
+					d = l->date;
+					numRun++;
+				}
+
+				if(compareUDateCell(l->date, d) == -1)
+				{
+					d = l->date;
+					numRun ++;
+				}
+				else
+					d = l->date;
+
+				if(run == numRun)
+					if(strcmp(l->data->threadName, threadName) == 0)
+						if(strcmp(l->data->counter, counterName) == 0)
+							count = l->data->value;
+			}
+		}
+
+		l = l->next;
+	}
+
+	return count;
+}
+/*
 int64_t calcNbDropForCounter(dataList *l, char *counterName, int run)
 {
 	int64_t count, numRun;
@@ -75,7 +123,7 @@ int64_t calcNbDropForCounter(dataList *l, char *counterName, int run)
 
 	return count;
 }
-
+*/
 int clacNbRun(dataList *l)
 {
 	int count;

@@ -40,5 +40,6 @@ void newDataList(dataList **l);
 void printDataList(dataList *l);
 int convertUDateToSec(dateCell *d);
 int compareUDateCell(dateCell *d1, dateCell *d2);
+void freeDataList(dataList *l);
 
 #endif /*_GESTIONSTRUT_H*/

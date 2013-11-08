@@ -42,7 +42,7 @@ void printDataList(dataList *l)
 	while(l != NULL)
 	{
 		if(l->data != NULL)
-			printf("%s, %s, %ld", l->data->counter, l->data->threadName, l->data->value);
+			printf("%s, %s, %lld", l->data->counter, l->data->threadName, l->data->value);
 
 		if(l->date != NULL)
 			printf("  %.2d/%.2d/%.4d %.2d:%.2d:%.2d %.2d:%.2d:%.2d:%.2d",
@@ -72,8 +72,8 @@ int compareUDateCell(dateCell *d1, dateCell *d2)
 {
 	/*
 		Retourne 0 si les 2 date sont identiques
-(a faire)	Retourne 1 si d1 est après d2
-(a faire)	Retourne -1 si d1 est avant d2
+		Retourne 1 si d1 est après d2
+		Retourne -1 si d1 est avant d2
 	*/
 
 	if(d1->uday == d2->uday)
@@ -103,4 +103,18 @@ int compareUDateCell(dateCell *d1, dateCell *d2)
 		return 1;
 	else
 		return -1;
+}
+
+void freeDataList(dataList *l)
+{
+	dataList *tmp = NULL;
+
+	while(l != NULL)
+	{
+		tmp = l;
+		l = l->next;
+		free(tmp->date);
+		free(tmp->data);
+		free(tmp);
+	}
 }

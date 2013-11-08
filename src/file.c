@@ -1,6 +1,6 @@
 #include "main.h"
 
-int importFile(char *filename)
+int importFile(char *filename, dataList **l)
 {
 	/*
 		Import un fichier
@@ -8,18 +8,15 @@ int importFile(char *filename)
 		Renvoie 1 en cas de succes
 	*/
 	int retour, nbReadLine;
-	char buf[255], insertLine[5000000];
+	char buf[255];
 	FILE *filelog = NULL;
 	dataLine *actLine = NULL;
-	dataList *l = NULL;
 	dataList *ptr = NULL;
 
 	retour = 0;
 	nbReadLine = 0;
-	memset(insertLine, '\0', 5000000);
-	sprintf(insertLine, "INSERT INTO infos VALUES ('test', 'test', '10')\n");
 
-	newDataList(&l); 
+	newDataList(l); 
 	newDataLine(&actLine);
 
 	filelog = fopen(filename, "r");
@@ -29,7 +26,7 @@ int importFile(char *filename)
 		return -1;
 	}
 
-	ptr = l;
+	ptr = *l;
 
 	while((retour = readLine(filelog, buf)) != -1)
 	{
@@ -53,8 +50,6 @@ int importFile(char *filename)
 	}
 
 	free(actLine);
-
-	insertDataList(l);
 
 	return 1;
 }
@@ -109,7 +104,7 @@ void parseDateLine(char *data, dateCell *actDate)
 
 void parseDataLine(char *data, dataLine *actLine)
 {
-	sscanf(data, "%s | %s | %ld",
+	sscanf(data, "%s | %s | %lld",
 			actLine->counter,
 			actLine->threadName,
 			&(actLine->value)
