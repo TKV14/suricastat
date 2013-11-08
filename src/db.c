@@ -81,7 +81,7 @@ void insertDataList(dataList *l)
 				sprintf(sqlCommand, "INSERT INTO infos VALUES ("
 					"'%4d-%2d-%2d %2d:%2d:%2d',"
 					"'%2d', '%2d', '%2d', '%2d', "
-					"'%s', '%s', '%lld')",
+					"'%s', '%s', '%ld')",
 					date->year,
 					date->month,
 					date->day,
@@ -101,7 +101,7 @@ void insertDataList(dataList *l)
 				sprintf(tmp, ", ("
 					"'%4d-%2d-%2d %2d:%2d:%2d',"
 					"'%2d', '%2d', '%2d', '%2d', "
-					"'%s', '%s', '%lld')",
+					"'%s', '%s', '%ld')",
 					date->year,
 					date->month,
 					date->day,

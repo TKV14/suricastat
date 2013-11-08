@@ -109,7 +109,7 @@ void parseDateLine(char *data, dateCell *actDate)
 
 void parseDataLine(char *data, dataLine *actLine)
 {
-	sscanf(data, "%s | %s | %lld",
+	sscanf(data, "%s | %s | %ld",
 			actLine->counter,
 			actLine->threadName,
 			&(actLine->value)

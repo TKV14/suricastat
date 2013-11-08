@@ -42,7 +42,7 @@ void printDataList(dataList *l)
 	while(l != NULL)
 	{
 		if(l->data != NULL)
-			printf("%s, %s, %lld", l->data->counter, l->data->threadName, l->data->value);
+			printf("%s, %s, %ld", l->data->counter, l->data->threadName, l->data->value);
 
 		if(l->date != NULL)
 			printf("  %.2d/%.2d/%.4d %.2d:%.2d:%.2d %.2d:%.2d:%.2d:%.2d",
@@ -78,7 +78,7 @@ int compareUDateCell(dateCell *d1, dateCell *d2)
 
 	if(d1->uday == d2->uday)
 	{
-		if(d1->hours == d2->hours)
+		if(d1->uhours == d2->uhours)
 		{
 			if(d1->umin == d2->umin)
 			{
@@ -94,7 +94,7 @@ int compareUDateCell(dateCell *d1, dateCell *d2)
 			else
 				return -1;
 		}
-		else if(d1->hours > d2->hours)
+		else if(d1->uhours > d2->uhours)
 			return 1;
 		else
 			return -1;

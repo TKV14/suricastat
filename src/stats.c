@@ -2,15 +2,19 @@
 
 void stats(dataList *l)
 {
-	int nbCounter, nbThread;
+	int nbCounter, nbThread, nbRun;
 	char **counterNames = NULL;
 	char **threadNames = NULL;
+//	dataList *ptr = NULL;
+
+//	ptr = (dataList*) malloc(sizeof(dataList));
 
 //	counterNames = (char**) malloc(sizeof(char*));
 //	threadNames = (char**) malloc(sizeof(char*));
 
 	nbCounter = calcNbCounter(l, &counterNames);
 	nbThread = calcNbThread(l, &threadNames);
+	nbRun = clacNbRun(l);
 
 /*	printf("%d\n", nbCounter);
 	for(i=0; i<nbCounter; i++)
@@ -24,7 +28,21 @@ void stats(dataList *l)
 	calcNbDropForCounter(l, counterNames[0]);
 	calcNbDropForCounter(l, counterNames[1]);
 
-	printf("sec: %d\n", clacSecondeInRun(l));
+	printf("%d %d\n", nbCounter, nbThread);
+
+	printf("%d\n", nbRun);
+//	printf("sec: %d\n", nbSecondeInRun(l, 1));
+
+/*	ptr = l;
+
+	while(ptr!=NULL)
+	{
+		if(ptr->date != NULL)
+			printDate(ptr->date);
+		ptr = ptr->next;
+	}
+*/
+	printf("%d\n", nbSecondeInRun(l, 1));
 }
 
 int64_t calcNbDropForCounter(dataList *l, char *counterName)
@@ -61,17 +79,58 @@ int clacNbRun(dataList *l)
 				d = l->date;
 				count ++;
 			}
-			else if(compareUDateCell(l->date, d) == -1)
+
+			if(compareUDateCell(l->date, d) == -1)
 			{
 				d = l->date;
 				count ++;
 			}
+			else
+				d = l->date;
 		}
 
 		l = l->next;
 	}
 
 	return count;
+}
+
+int nbSecondeInRun(dataList *l, int run)
+{
+	int count;
+	dateCell *d = NULL;
+
+	count = 0;
+
+	while(l != NULL)
+	{
+		if(l->date != NULL)
+		{
+			if(d == NULL)
+			{
+				d = l->date;
+				count ++;
+			}
+
+			if(compareUDateCell(l->date, d) == -1)
+			{
+				if(count == run)
+					break;
+
+				d = l->date;
+				count ++;
+			}
+			else
+				d = l->date;
+		}
+
+		l = l->next;
+	}
+
+	return (d->usec*SEC)+
+		(d->umin*MIN)+
+		(d->uhours*HOUR)+
+		(d->uday*DAY);
 }
 
 int calcNbThread(dataList *l, char ***threadNames)
