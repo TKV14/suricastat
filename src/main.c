@@ -2,11 +2,11 @@
 
 int main(void)
 {
-	float time;
-	clock_t t1, t2;
+//	float time;
+//	clock_t t1, t2;
 	dataList *l = NULL;
 
-	t1 = clock();
+//	t1 = clock();
 //	openDb(DBPATH);
 //	createTable(DBPATH);
 //	importFile("../stats.log");
@@ -14,10 +14,10 @@ int main(void)
 	readDataBase(&l);
 	stats(l);
 
-	t2 = clock();
+//	t2 = clock();
 
-	time = (float)(t2-t1)/CLOCKS_PER_SEC;
-	printf("temps = %f\n", time);
+//	time = (float)(t2-t1)/CLOCKS_PER_SEC;
+//	printf("temps = %f\n", time);
 
 	return 0;
 }

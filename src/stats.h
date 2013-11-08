@@ -7,7 +7,7 @@
 #define DAY 24*HOUR
 
 void stats(dataList *l);
-int64_t calcNbDropForCounter(dataList *l, char *counterName);
+int64_t calcNbDropForCounter(dataList *l, char *counterName, int run);
 int clacNbRun(dataList *l);
 int nbSecondeInRun(dataList *l, int run);
 int calcNbThread(dataList *l, char ***threadNames);
